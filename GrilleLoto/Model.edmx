@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="BDDModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="BDDModelStoreContainer">
+          <EntitySet Name="Journee" EntityType="BDDModel.Store.Journee" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Numbers" EntityType="BDDModel.Store.Numbers" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Partie" EntityType="BDDModel.Store.Partie" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_NumbersToParties" Association="BDDModel.Store.FK_NumbersToParties">
+            <End Role="Partie" EntitySet="Partie" />
+            <End Role="Numbers" EntitySet="Numbers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PartieToJournee" Association="BDDModel.Store.FK_PartieToJournee">
+            <End Role="Journee" EntitySet="Journee" />
+            <End Role="Partie" EntitySet="Partie" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Journee">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Num" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Date" Type="datetime2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Numbers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Num" Type="int" Nullable="false" />
+          <Property Name="Partie_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Partie">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Num" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime2" Nullable="false" />
+          <Property Name="Journee_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_NumbersToParties">
+          <End Role="Partie" Type="BDDModel.Store.Partie" Multiplicity="1" />
+          <End Role="Numbers" Type="BDDModel.Store.Numbers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Partie">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Numbers">
+              <PropertyRef Name="Partie_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PartieToJournee">
+          <End Role="Journee" Type="BDDModel.Store.Journee" Multiplicity="1" />
+          <End Role="Partie" Type="BDDModel.Store.Partie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Journee">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Partie">
+              <PropertyRef Name="Journee_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BDDModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="BDDEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Journees" EntityType="BDDModel.Journee" />
+          <EntitySet Name="Numbers" EntityType="BDDModel.Number" />
+          <EntitySet Name="Parties" EntityType="BDDModel.Partie" />
+          <AssociationSet Name="FK_PartieToJournee" Association="BDDModel.FK_PartieToJournee">
+            <End Role="Journee" EntitySet="Journees" />
+            <End Role="Partie" EntitySet="Parties" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NumbersToParties" Association="BDDModel.FK_NumbersToParties">
+            <End Role="Partie" EntitySet="Parties" />
+            <End Role="Number" EntitySet="Numbers" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Journee">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Num" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="Date" Nullable="false" Precision="7" />
+          <NavigationProperty Name="Parties" Relationship="BDDModel.FK_PartieToJournee" FromRole="Journee" ToRole="Partie" />
+        </EntityType>
+        <EntityType Name="Number">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="Num" Nullable="false" />
+          <Property Type="Int32" Name="Partie_Id" Nullable="false" />
+          <NavigationProperty Name="Partie" Relationship="BDDModel.FK_NumbersToParties" FromRole="Number" ToRole="Partie" />
+        </EntityType>
+        <EntityType Name="Partie">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="Num" Nullable="false" />
+          <Property Type="DateTime" Name="Date" Nullable="false" Precision="7" />
+          <Property Type="Int32" Name="Journee_Id" Nullable="false" />
+          <NavigationProperty Name="Journee" Relationship="BDDModel.FK_PartieToJournee" FromRole="Partie" ToRole="Journee" />
+          <NavigationProperty Name="Numbers" Relationship="BDDModel.FK_NumbersToParties" FromRole="Partie" ToRole="Number" />
+        </EntityType>
+        <Association Name="FK_PartieToJournee">
+          <End Type="BDDModel.Journee" Role="Journee" Multiplicity="1" />
+          <End Type="BDDModel.Partie" Role="Partie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Journee">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Partie">
+              <PropertyRef Name="Journee_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NumbersToParties">
+          <End Type="BDDModel.Partie" Role="Partie" Multiplicity="1" />
+          <End Type="BDDModel.Number" Role="Number" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Partie">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Number">
+              <PropertyRef Name="Partie_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BDDModelStoreContainer" CdmEntityContainer="BDDEntities">
+          <EntitySetMapping Name="Journees">
+            <EntityTypeMapping TypeName="BDDModel.Journee">
+              <MappingFragment StoreEntitySet="Journee">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Num" ColumnName="Num" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Numbers">
+            <EntityTypeMapping TypeName="BDDModel.Number">
+              <MappingFragment StoreEntitySet="Numbers">
+                <ScalarProperty Name="Partie_Id" ColumnName="Partie_Id" />
+                <ScalarProperty Name="Num" ColumnName="Num" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Parties">
+            <EntityTypeMapping TypeName="BDDModel.Partie">
+              <MappingFragment StoreEntitySet="Partie">
+                <ScalarProperty Name="Journee_Id" ColumnName="Journee_Id" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Num" ColumnName="Num" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Aucun" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
