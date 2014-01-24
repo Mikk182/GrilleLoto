@@ -92,6 +92,7 @@
     <Compile Include="BDD.cs" />
     <Compile Include="DatabaseLayer\BaseService.cs" />
     <Compile Include="DatabaseLayer\JourneeService.cs" />
+    <Compile Include="DatabaseLayer\PartieService.cs" />
     <Compile Include="Form2.cs">
       <SubType>Form</SubType>
     </Compile>

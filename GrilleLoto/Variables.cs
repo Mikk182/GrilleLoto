@@ -8,5 +8,7 @@ namespace GrilleLoto
     class Variables
     {
         public static Journee CurJournee { get; set; }
+
+        public static Partie CurPartie { get; set; }
     }
 }

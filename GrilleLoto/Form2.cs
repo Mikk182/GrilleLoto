@@ -20,23 +20,17 @@ namespace GrilleLoto
             _service = new Service();
 
             InitializeComponent();
-
-            var journee = new Journee();
-            journee.Num = "";
-            journee.Date = DateTime.Now;
-            //journee.Partie.Add();
-
-            //var partie = new Partie();
-            //partie.Numbers.Add():
-
-            
-
-            
-
         }
 
         private void b_new_Click(object sender, EventArgs e)
         {
+            var curPartie = new Partie();
+            curPartie.Num = 1;
+            curPartie.Date = DateTime.Now;
+
+            Variables.CurPartie = curPartie;
+            Variables.CurJournee.Parties.Add(curPartie);
+
             Form1 frm = new Form1();
             frm.Show();
         }
