@@ -28,8 +28,10 @@ namespace GrilleLoto
             curPartie.Num = 1;
             curPartie.Date = DateTime.Now;
 
+            curPartie.Journee = Variables.CurJournee;
+
             Variables.CurPartie = curPartie;
-            Variables.CurJournee.Parties.Add(curPartie);
+            //Variables.CurJournee.Parties.Add(curPartie);
 
             Form1 frm = new Form1();
             frm.Show();

@@ -14,6 +14,7 @@ namespace GrilleLoto.DatabaseLayer
             return DBjournee;
         }
 
+
         public Journee GetJournee(Journee journee)
         {
             return DB.Journees.Single(j => j.Num == journee.Num);
