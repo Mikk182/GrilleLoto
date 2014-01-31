@@ -37,10 +37,7 @@ namespace GrilleLoto
                 Date = DateTime.Now
             };
 
-
             if (!_service.ExistJournee(journee))
-
-
             {
                 Variables.CurJournee = _service.InsertJournee(journee);
             }

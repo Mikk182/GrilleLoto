@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.Linq;
-using System.Text;
 
 namespace GrilleLoto.DatabaseLayer
 {
@@ -9,9 +8,9 @@ namespace GrilleLoto.DatabaseLayer
     {
         public Partie InsertPartie(Partie partie)
         {
-            var DBPartie = DB.Parties.Add(partie);
+            var dbPartie = DB.Parties.Add(partie);
             DB.SaveChanges();
-            return DBPartie;
+            return dbPartie;
         }
 
         public Partie GetPartie(Partie partie)
@@ -27,6 +26,13 @@ namespace GrilleLoto.DatabaseLayer
         public bool ExistPartie(Partie partie)
         {
             return DB.Parties.Any(j => j.Num == partie.Num);
+        }
+
+        public Partie UpdatePartie(Partie partie)
+        {
+            DB.Entry(partie).State = EntityState.Modified;
+            DB.SaveChanges();
+            return partie;
         }
     }
 }

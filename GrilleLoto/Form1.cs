@@ -23,6 +23,21 @@ namespace GrilleLoto
 
             t_liste = new ArrayList();
             lbl_liste = new ArrayList();
+
+            if (Variables.CurPartie == null)
+            {
+                Variables.CurPartie = new Partie
+                    {
+                        Journee = new Journee
+                            {
+                                Date = DateTime.UtcNow,
+                                Num = "1",
+                            },
+                        Date = DateTime.UtcNow,
+                        Num = 1
+                    };
+            }
+
             UserForm_Initialize();
         }
 
@@ -137,19 +152,7 @@ namespace GrilleLoto
 
         private Boolean exist(Int32 nb)
         {
-            bool result = false;
-            for (int i = 0; i < t_liste.Count - 1; i++)
-            {
-                if (t_liste.Count != 0)
-                {
-                    if (Convert.ToInt32(t_liste[i]) == nb)
-                    {
-                        result = true;
-                        break;
-                    }
-                }
-            }
-            return result;
+            return t_liste.Contains(nb);
         }
 
         public void effacer(bool erasetab)
@@ -269,11 +272,11 @@ namespace GrilleLoto
 
                             if (_service.ExistPartie(Variables.CurPartie))
                             {
-                                // TODO : Update
+                                _service.UpdatePartie(Variables.CurPartie);
                             }
                             else
                             {
-                                // TODO : Save
+                                Variables.CurPartie = _service.InsertPartie(Variables.CurPartie);
                             }
                         }
                         else
